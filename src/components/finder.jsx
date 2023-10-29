@@ -5,6 +5,7 @@ class Finder extends Component {
   state = {
     requestedWord: requestedWord,
     currentPage: currentPage,
+    showList: false,
   };
 
   getWordFromInput = event => {
@@ -14,26 +15,31 @@ class Finder extends Component {
     this.setState(() => ({
       requestedWord: searchWord,
     }));
-    //console.log(searchWord);
     this.renderData(searchWord);
   };
 
   renderData = async searchWord => {
     const data = await fetchData(searchWord, this.state.currentPage)
       .then(data => {
-        //console.log(this.state.requestedWord);
-        return data.hits;
+        if (data.hits.length > 0) {
+          ImageGalleryItem(data.hits);
+          //console.log('here we are');
+          this.setState(() => ({
+            showList: true,
+          }));
+          return data.hits;
+        }
       })
       .catch(error => console.log(error.message));
 
-    console.log(data.map(element => console.log(element)));
+    // console.log(data.map(element => console.log(element)));
   };
 
   render() {
     return (
       <>
         <Searchbar fnOnFormSubmit={this.getWordFromInput} />
-        <ImageGallery />
+        {this.state.showList && <ImageGallery children={ImageGalleryItem()} />}
       </>
     );
   }
@@ -64,22 +70,25 @@ const Searchbar = ({ fnOnFormSubmit }) => {
 };
 
 const ImageGallery = ({ children }) => {
-  return (
-    <ul className="gallery">
-      <ImageGalleryItem />
-    </ul>
-  );
+  return <ul className="gallery">{children}</ul>;
 };
 
-const ImageGalleryItem = () => {
-  return (
-    <li className="gallery-item">
-      <img src="" alt="" />
-    </li>
-  );
+const ImageGalleryItem = listOfItems => {
+  console.log(listOfItems);
+  const map = listOfItems.forEach(item => {
+    return (
+      <li id={item.id} className="gallery-item">
+        <img src={item.pageURL} alt={item.tags} />
+      </li>
+    );
+  });
+  console.log(map);
+  return map;
+  //   return (
+  //     <li className="gallery-item">
+  //       <img src="" alt="" />
+  //     </li>
+  //   );
 };
-
-// fetchData();
-// console.log(currentPage);
 
 export default Finder;
