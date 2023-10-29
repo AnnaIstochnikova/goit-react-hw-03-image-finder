@@ -6,6 +6,7 @@ class Finder extends Component {
     requestedWord: requestedWord,
     currentPage: currentPage,
     showList: false,
+    data: [],
   };
 
   getWordFromInput = event => {
@@ -15,31 +16,43 @@ class Finder extends Component {
     this.setState(() => ({
       requestedWord: searchWord,
     }));
+
+    //this.renderData(this.state.data);
     this.renderData(searchWord);
   };
 
-  renderData = async searchWord => {
-    const data = await fetchData(searchWord, this.state.currentPage)
-      .then(data => {
-        if (data.hits.length > 0) {
-          ImageGalleryItem(data.hits);
-          //console.log('here we are');
-          this.setState(() => ({
-            showList: true,
-          }));
-          return data.hits;
-        }
-      })
-      .catch(error => console.log(error.message));
+  //   componentDidMount() {
+  //     console.log(requestedWord);
+  //     this.renderData(this.state.requestedWord);
+  //   }
 
+  renderData = async searchWord => {
+    console.log(searchWord);
+    try {
+      const data = await fetchData(searchWord, this.state.currentPage);
+      console.log(data);
+      if (data.hits.length > 0) {
+        //console.log('here we are');
+        this.setState({
+          showList: true,
+          data: data.hits,
+        });
+      }
+      //return data.hits;
+    } catch (error) {
+      console.log(error.message);
+    }
     // console.log(data.map(element => console.log(element)));
   };
 
   render() {
+    console.log(this.state.data);
     return (
       <>
         <Searchbar fnOnFormSubmit={this.getWordFromInput} />
-        {this.state.showList && <ImageGallery children={ImageGalleryItem()} />}
+        {this.state.showList && (
+          <ImageGallery children={ImageGalleryItem(this.state.data)} />
+        )}
       </>
     );
   }
@@ -75,9 +88,9 @@ const ImageGallery = ({ children }) => {
 
 const ImageGalleryItem = listOfItems => {
   console.log(listOfItems);
-  const map = listOfItems.forEach(item => {
+  const map = listOfItems.map(item => {
     return (
-      <li id={item.id} className="gallery-item">
+      <li key={item.id} className="gallery-item">
         <img src={item.pageURL} alt={item.tags} />
       </li>
     );
