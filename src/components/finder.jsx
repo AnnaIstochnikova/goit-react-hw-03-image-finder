@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// import SimpleLightbox from 'simplelightbox';
+
 import { fetchData, requestedWord, currentPage } from './APISearch';
 
 class Finder extends Component {
@@ -7,6 +9,7 @@ class Finder extends Component {
     currentPage: currentPage,
     showList: false,
     data: [],
+    isModalOpen: false,
   };
 
   getWordFromInput = event => {
@@ -16,15 +19,9 @@ class Finder extends Component {
     this.setState(() => ({
       requestedWord: searchWord,
     }));
-
-    //this.renderData(this.state.data);
     this.renderData(searchWord);
+    form.reset();
   };
-
-  //   componentDidMount() {
-  //     console.log(requestedWord);
-  //     this.renderData(this.state.requestedWord);
-  //   }
 
   renderData = async searchWord => {
     console.log(searchWord);
@@ -32,17 +29,26 @@ class Finder extends Component {
       const data = await fetchData(searchWord, this.state.currentPage);
       console.log(data);
       if (data.hits.length > 0) {
-        //console.log('here we are');
         this.setState({
           showList: true,
           data: data.hits,
         });
       }
-      //return data.hits;
     } catch (error) {
       console.log(error.message);
     }
-    // console.log(data.map(element => console.log(element)));
+  };
+
+  //   componentDidMount() {
+  //     this.simpleLightbox = new SimpleLightbox('.gallery-item a', {
+  //       captionDelay: 250,
+  //     });
+  //   }
+
+  openModal = () => {
+    this.setState({
+      isModalOpen: true,
+    });
   };
 
   render() {
@@ -51,8 +57,14 @@ class Finder extends Component {
       <>
         <Searchbar fnOnFormSubmit={this.getWordFromInput} />
         {this.state.showList && (
-          <ImageGallery children={ImageGalleryItem(this.state.data)} />
+          <ImageGallery
+            children={ImageGalleryItem({
+              listOfItems: this.state.data,
+              onImageClick: this.openModal,
+            })}
+          />
         )}
+        <ModalPhoto photo={this.state.data} />
       </>
     );
   }
@@ -86,22 +98,22 @@ const ImageGallery = ({ children }) => {
   return <ul className="gallery">{children}</ul>;
 };
 
-const ImageGalleryItem = listOfItems => {
-  console.log(listOfItems);
+const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
   const map = listOfItems.map(item => {
     return (
       <li key={item.id} className="gallery-item">
-        <img src={item.pageURL} alt={item.tags} />
+        <a href={item.largeImageURL} onClick={onImageClick}>
+          <img src={item.webformatURL} alt={item.tags} />
+        </a>
       </li>
     );
   });
   console.log(map);
   return map;
-  //   return (
-  //     <li className="gallery-item">
-  //       <img src="" alt="" />
-  //     </li>
-  //   );
+};
+
+const ModalPhoto = photo => {
+  return <img src={photo.largeImageURL} alt={photo.tags} />;
 };
 
 export default Finder;
