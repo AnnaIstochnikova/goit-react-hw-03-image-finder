@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 
 import { fetchData, requestedWord, currentPage } from './APISearch';
 
@@ -9,8 +9,9 @@ class Finder extends Component {
     currentPage: currentPage,
     data: [],
     showList: false,
-    showModal: false,
+    //showModal: false,
     showBtnLoadMore: false,
+    totalHits: 0,
   };
 
   getWordFromInput = event => {
@@ -32,6 +33,7 @@ class Finder extends Component {
         this.setState({
           showList: true,
           data: data.hits,
+          totalHits: data.totalHits,
         });
       }
       if (data.totalHits > 12) {
@@ -44,17 +46,11 @@ class Finder extends Component {
     }
   };
 
-  //   componentDidMount() {
-  //     this.simpleLightbox = new SimpleLightbox('.gallery-item a', {
-  //       captionDelay: 250,
-  //     });
-  //   }
-
-  openModal = () => {
-    this.setState({
-      showModal: true,
+  componentDidMount() {
+    this.simpleLightbox = new SimpleLightbox('.gallery-item a', {
+      captionDelay: 250,
     });
-  };
+  }
 
   loadMoreContent = async () => {
     try {
@@ -67,16 +63,18 @@ class Finder extends Component {
         this.setState(prevState => ({
           currentPage: prevState.currentPage + 1,
           data: [...prevState.data, ...data.hits],
+          totalHits: data.totalHits,
         }));
       }
-      console.log(data.totalHits);
-      console.log(this.state.currentPage);
-      console.log(this.state.data.length);
+      if (this.state.totalHits / 12 - 1 <= this.state.currentPage) {
+        this.setState({
+          showBtnLoadMore: false,
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }
   };
-  //   currentPage = this.state.currentPage;
 
   render() {
     return (
@@ -86,7 +84,6 @@ class Finder extends Component {
           <ImageGallery
             children={ImageGalleryItem({
               listOfItems: this.state.data,
-              onImageClick: this.openModal,
             })}
           />
         )}
@@ -138,10 +135,6 @@ const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
     );
   });
   return map;
-};
-
-const ModalPhoto = photo => {
-  return <img src={photo.largeImageURL} alt={photo.tags} />;
 };
 
 const LoadMoreBtn = ({ onButtonClick }) => {
