@@ -7,9 +7,10 @@ class Finder extends Component {
   state = {
     requestedWord: requestedWord,
     currentPage: currentPage,
-    showList: false,
     data: [],
-    isModalOpen: false,
+    showList: false,
+    showModal: false,
+    showBtnLoadMore: false,
   };
 
   getWordFromInput = event => {
@@ -24,16 +25,23 @@ class Finder extends Component {
   };
 
   renderData = async searchWord => {
-    console.log(searchWord);
     try {
       const data = await fetchData(searchWord, this.state.currentPage);
-      console.log(data);
+      //console.log(data.totalHits);
       if (data.hits.length > 0) {
         this.setState({
           showList: true,
           data: data.hits,
         });
       }
+      if (data.totalHits > 12) {
+        this.setState({
+          showBtnLoadMore: true,
+        });
+      }
+      console.log(data.totalHits);
+      console.log(this.state.currentPage);
+      console.log(this.state.data.length);
     } catch (error) {
       console.log(error.message);
     }
@@ -47,20 +55,30 @@ class Finder extends Component {
 
   openModal = () => {
     this.setState({
-      isModalOpen: true,
+      showModal: true,
     });
   };
 
-  loadMoreContent = () => {
-    this.setState(prevState => ({
-      currentPage: prevState.currentPage + 1,
-    }));
-    //   currentPage = this.state.currentPage;
+  loadMoreContent = async () => {
+    try {
+      const data = await fetchData(
+        this.state.requestedWord,
+        this.state.currentPage + 1
+      );
+
+      if (data.hits.length > 0) {
+        this.setState(prevState => ({
+          currentPage: prevState.currentPage + 1,
+          data: [...prevState.data, ...data.hits],
+        }));
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+  //   currentPage = this.state.currentPage;
 
   render() {
-    console.log(this.state.currentPage);
-    console.log(this.state.data);
     return (
       <>
         <Searchbar fnOnFormSubmit={this.getWordFromInput} />
@@ -72,7 +90,9 @@ class Finder extends Component {
             })}
           />
         )}
-        <LoadMoreBtn onButtonClick={this.loadMoreContent} />
+        {this.state.showBtnLoadMore && (
+          <LoadMoreBtn onButtonClick={this.loadMoreContent} />
+        )}
         <ModalPhoto photo={this.state.data} />
       </>
     );
@@ -117,7 +137,6 @@ const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
       </li>
     );
   });
-  console.log(map);
   return map;
 };
 
