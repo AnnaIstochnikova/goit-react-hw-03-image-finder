@@ -39,9 +39,6 @@ class Finder extends Component {
           showBtnLoadMore: true,
         });
       }
-      console.log(data.totalHits);
-      console.log(this.state.currentPage);
-      console.log(this.state.data.length);
     } catch (error) {
       console.log(error.message);
     }
@@ -72,6 +69,9 @@ class Finder extends Component {
           data: [...prevState.data, ...data.hits],
         }));
       }
+      console.log(data.totalHits);
+      console.log(this.state.currentPage);
+      console.log(this.state.data.length);
     } catch (error) {
       console.log(error.message);
     }
@@ -93,7 +93,7 @@ class Finder extends Component {
         {this.state.showBtnLoadMore && (
           <LoadMoreBtn onButtonClick={this.loadMoreContent} />
         )}
-        <ModalPhoto photo={this.state.data} />
+        {/* <ModalPhoto photo={this.state.data} /> */}
       </>
     );
   }
@@ -107,7 +107,7 @@ const Searchbar = ({ fnOnFormSubmit }) => {
     <header className="searchbar">
       <form className="form" onSubmit={handleSubmit}>
         <button type="submit" className="button">
-          <span className="button-label">Search</span>
+          S
         </button>
 
         <input
@@ -146,7 +146,7 @@ const ModalPhoto = photo => {
 
 const LoadMoreBtn = ({ onButtonClick }) => {
   return (
-    <button type="button" onClick={onButtonClick}>
+    <button className="button--load-more" type="button" onClick={onButtonClick}>
       Load more
     </button>
   );
