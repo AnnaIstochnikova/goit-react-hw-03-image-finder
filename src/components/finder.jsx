@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import SimpleLightbox from 'simplelightbox';
 import { Watch } from 'react-loader-spinner';
 
-import { fetchData, requestedWord, currentPage } from './APISearch';
+import { Searchbar } from './search-bar/search-bar';
+import { LoadMoreBtn } from './load-more-btn/load-more-btn';
+import { ImageGallery } from './image-gallery/image-gallery';
+import { ImageGalleryItem } from './image-gallery-item/image-gallery-item';
+import { fetchData, requestedWord, currentPage } from './API-search/APISearch';
 
 class Finder extends Component {
   state = {
@@ -116,54 +120,5 @@ class Finder extends Component {
     );
   }
 }
-
-const Searchbar = ({ fnOnFormSubmit }) => {
-  const handleSubmit = event => {
-    fnOnFormSubmit(event);
-  };
-  return (
-    <header className="searchbar">
-      <form className="form" onSubmit={handleSubmit}>
-        <button type="submit" className="button">
-          S
-        </button>
-
-        <input
-          id="input"
-          className="input"
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-        />
-      </form>
-    </header>
-  );
-};
-
-const ImageGallery = ({ children }) => {
-  return <ul className="gallery">{children}</ul>;
-};
-
-const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
-  const map = listOfItems.map(item => {
-    return (
-      <li key={item.id} className="gallery-item">
-        <a href={item.largeImageURL}>
-          <img src={item.webformatURL} alt={item.tags} />
-        </a>
-      </li>
-    );
-  });
-  return map;
-};
-
-const LoadMoreBtn = ({ onButtonClick }) => {
-  return (
-    <button className="button--load-more" type="button" onClick={onButtonClick}>
-      Load more
-    </button>
-  );
-};
 
 export default Finder;

@@ -1,4 +1,4 @@
-import Finder from './finder';
+import Finder from './components/finder';
 
 export const App = () => {
   return (
