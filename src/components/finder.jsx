@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SimpleLightbox from 'simplelightbox';
+import { Watch } from 'react-loader-spinner';
 
 import { fetchData, requestedWord, currentPage } from './APISearch';
 
@@ -9,6 +10,7 @@ class Finder extends Component {
     currentPage: currentPage,
     data: [],
     showList: false,
+    showSpinner: false,
     //showModal: false,
     showBtnLoadMore: false,
     totalHits: 0,
@@ -19,6 +21,7 @@ class Finder extends Component {
     const form = event.currentTarget;
     const searchWord = form.elements.input.value;
     this.setState(() => ({
+      showSpinner: true,
       requestedWord: searchWord,
     }));
     this.renderData(searchWord);
@@ -31,6 +34,7 @@ class Finder extends Component {
       //console.log(data.totalHits);
       if (data.hits.length > 0) {
         this.setState({
+          showSpinner: false,
           showList: true,
           data: data.hits,
           totalHits: data.totalHits,
@@ -53,6 +57,9 @@ class Finder extends Component {
   }
 
   loadMoreContent = async () => {
+    this.setState({
+      showSpinner: true,
+    });
     try {
       const data = await fetchData(
         this.state.requestedWord,
@@ -64,6 +71,7 @@ class Finder extends Component {
           currentPage: prevState.currentPage + 1,
           data: [...prevState.data, ...data.hits],
           totalHits: data.totalHits,
+          showSpinner: false,
         }));
       }
       if (this.state.totalHits / 12 - 1 <= this.state.currentPage) {
@@ -87,9 +95,22 @@ class Finder extends Component {
             })}
           />
         )}
+        {this.state.showSpinner && (
+          <Watch
+            height="80"
+            width="80"
+            radius="48"
+            color="#149eca"
+            ariaLabel="watch-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        )}
         {this.state.showBtnLoadMore && (
           <LoadMoreBtn onButtonClick={this.loadMoreContent} />
         )}
+
         {/* <ModalPhoto photo={this.state.data} /> */}
       </>
     );
