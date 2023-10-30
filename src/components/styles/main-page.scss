@@ -24,11 +24,16 @@ header {
   height: 70px;
   background-color: #149eca;
   & > form > button {
-    width: 20px;
+    //width: 20px;
     position: relative;
-    left: 20px;
+    left: 29px;
+    top: 5px;
     background-color: transparent;
     border: none;
+    & > svg {
+      width: 20px;
+      //height: 20px;
+    }
   }
 }
 
