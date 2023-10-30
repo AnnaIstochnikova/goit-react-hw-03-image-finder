@@ -51,7 +51,15 @@ class Finder extends Component {
     });
   };
 
+  loadMoreContent = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
+    //   currentPage = this.state.currentPage;
+  };
+
   render() {
+    console.log(this.state.currentPage);
     console.log(this.state.data);
     return (
       <>
@@ -64,6 +72,7 @@ class Finder extends Component {
             })}
           />
         )}
+        <LoadMoreBtn onButtonClick={this.loadMoreContent} />
         <ModalPhoto photo={this.state.data} />
       </>
     );
@@ -102,7 +111,7 @@ const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
   const map = listOfItems.map(item => {
     return (
       <li key={item.id} className="gallery-item">
-        <a href={item.largeImageURL} onClick={onImageClick}>
+        <a href={item.largeImageURL}>
           <img src={item.webformatURL} alt={item.tags} />
         </a>
       </li>
@@ -114,6 +123,14 @@ const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
 
 const ModalPhoto = photo => {
   return <img src={photo.largeImageURL} alt={photo.tags} />;
+};
+
+const LoadMoreBtn = ({ onButtonClick }) => {
+  return (
+    <button type="button" onClick={onButtonClick}>
+      Load more
+    </button>
+  );
 };
 
 export default Finder;
