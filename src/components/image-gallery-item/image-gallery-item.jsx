@@ -1,4 +1,6 @@
-export const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
+import PropTypes from 'prop-types';
+
+export const ImageGalleryItem = ({ listOfItems }) => {
   const map = listOfItems.map(item => {
     return (
       <li key={item.id} className="gallery-item">
@@ -9,4 +11,8 @@ export const ImageGalleryItem = ({ listOfItems, onImageClick }) => {
     );
   });
   return map;
+};
+
+ImageGalleryItem.propTypes = {
+  listOfItems: PropTypes.array,
 };

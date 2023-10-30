@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export const Searchbar = ({ fnOnFormSubmit }) => {
   const handleSubmit = event => {
     fnOnFormSubmit(event);
@@ -20,4 +22,8 @@ export const Searchbar = ({ fnOnFormSubmit }) => {
       </form>
     </header>
   );
+};
+
+Searchbar.propTypes = {
+  fnOnFormSubmit: PropTypes.func,
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SimpleLightbox from 'simplelightbox';
 import { Watch } from 'react-loader-spinner';
@@ -122,3 +123,19 @@ class Finder extends Component {
 }
 
 export default Finder;
+
+Finder.propTypes = {
+  state: PropTypes.shape({
+    requestedWord: PropTypes.string,
+    currentPage: PropTypes.number,
+    showList: PropTypes.bool,
+    showSpinner: PropTypes.bool,
+    showBtnLoadMore: PropTypes.bool,
+    totalHits: PropTypes.number,
+    data: PropTypes.array,
+  }),
+  getWordFromInput: PropTypes.func,
+  renderData: PropTypes.func,
+  componentDidMount: PropTypes.func,
+  loadMoreContent: PropTypes.array,
+};
