@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import SimpleLightbox from 'simplelightbox';
 import { Watch } from 'react-loader-spinner';
 
 import { Searchbar } from './search-bar/search-bar';
@@ -55,12 +54,6 @@ class Finder extends Component {
     }
   };
 
-  componentDidMount() {
-    this.simpleLightbox = new SimpleLightbox('.gallery-item a', {
-      captionDelay: 250,
-    });
-  }
-
   loadMoreContent = async () => {
     this.setState({
       showSpinner: true,
@@ -109,8 +102,6 @@ class Finder extends Component {
         {this.state.showBtnLoadMore && (
           <LoadMoreBtn onButtonClick={this.loadMoreContent} />
         )}
-
-        {/* <ModalPhoto photo={this.state.data} /> */}
       </>
     );
   }
