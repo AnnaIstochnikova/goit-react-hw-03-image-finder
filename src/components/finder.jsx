@@ -6,7 +6,7 @@ import { Watch } from 'react-loader-spinner';
 import { Searchbar } from './search-bar/search-bar';
 import { LoadMoreBtn } from './load-more-btn/load-more-btn';
 import { ImageGallery } from './image-gallery/image-gallery';
-import { ImageGalleryItem } from './image-gallery-item/image-gallery-item';
+//import { ImageGalleryItem } from './image-gallery-item/image-gallery-item';
 import { fetchData, requestedWord, currentPage } from './API-search/APISearch';
 
 class Finder extends Component {
@@ -93,13 +93,7 @@ class Finder extends Component {
     return (
       <>
         <Searchbar fnOnFormSubmit={this.getWordFromInput} />
-        {this.state.showList && (
-          <ImageGallery
-            children={ImageGalleryItem({
-              listOfItems: this.state.data,
-            })}
-          />
-        )}
+        {this.state.showList && <ImageGallery data={this.state.data} />}
         {this.state.showSpinner && (
           <Watch
             height="80"

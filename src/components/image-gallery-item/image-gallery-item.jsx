@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import SimpleLightbox from 'simplelightbox';
 
 export const ImageGalleryItem = ({ listOfItems }) => {
   const map = listOfItems.map(item => {
@@ -10,6 +11,10 @@ export const ImageGalleryItem = ({ listOfItems }) => {
       </li>
     );
   });
+  const simpleLightbox = new SimpleLightbox('.gallery-item a', {
+    captionDelay: 250,
+  });
+  //   simpleLightbox();
   return map;
 };
 
