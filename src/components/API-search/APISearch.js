@@ -16,6 +16,5 @@ export const fetchData = async (requestedWord, currentPage) => {
       },
     }
   );
-  console.log(response.data);
   return response.data;
 };

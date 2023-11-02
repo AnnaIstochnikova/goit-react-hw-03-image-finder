@@ -24,7 +24,6 @@ header {
   height: 70px;
   background-color: #149eca;
   & > form > button {
-    //width: 20px;
     position: relative;
     left: 29px;
     top: 5px;
@@ -32,7 +31,6 @@ header {
     border: none;
     & > svg {
       width: 20px;
-      //height: 20px;
     }
   }
 }

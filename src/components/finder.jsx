@@ -5,7 +5,6 @@ import { Watch } from 'react-loader-spinner';
 import { Searchbar } from './search-bar/search-bar';
 import { LoadMoreBtn } from './load-more-btn/load-more-btn';
 import { ImageGallery } from './image-gallery/image-gallery';
-//import { ImageGalleryItem } from './image-gallery-item/image-gallery-item';
 import { fetchData, requestedWord, currentPage } from './API-search/APISearch';
 
 class Finder extends Component {
@@ -15,7 +14,6 @@ class Finder extends Component {
     data: [],
     showList: false,
     showSpinner: false,
-    //showModal: false,
     showBtnLoadMore: false,
     totalHits: 0,
   };
@@ -35,7 +33,6 @@ class Finder extends Component {
   renderData = async searchWord => {
     try {
       const data = await fetchData(searchWord, this.state.currentPage);
-      //console.log(data.totalHits);
       if (data.hits.length > 0) {
         this.setState({
           showSpinner: false,
@@ -65,12 +62,20 @@ class Finder extends Component {
       );
 
       if (data.hits.length > 0) {
-        this.setState(prevState => ({
-          currentPage: prevState.currentPage + 1,
-          data: [...prevState.data, ...data.hits],
-          totalHits: data.totalHits,
-          showSpinner: false,
-        }));
+        this.setState(
+          prevState => ({
+            currentPage: prevState.currentPage + 1,
+            data: [...prevState.data, ...data.hits],
+            totalHits: data.totalHits,
+            showSpinner: false,
+          }),
+          () => {
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth',
+            });
+          }
+        );
       }
       if (this.state.totalHits / 12 - 1 <= this.state.currentPage) {
         this.setState({
