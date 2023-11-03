@@ -8,11 +8,10 @@ ul {
   padding-top: 30px;
   justify-content: center;
   padding-bottom: 30px;
-}
-
-img {
-  width: 400px;
-  height: 270px;
+  & > li > img {
+    width: 400px;
+    height: 270px;
+  }
 }
 
 header {
@@ -60,4 +59,8 @@ input {
     cursor: pointer;
     background-color: #149eca;
   }
+}
+
+.button > img {
+  width: 20px;
 }
