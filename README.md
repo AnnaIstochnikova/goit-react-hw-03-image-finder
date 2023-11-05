@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a simple image finder application built with React. It allows users to search for images using keywords and displays the results in a grid. The application uses the Pixabay API to fetch images based on the user's input. It's a great exercise for practicing React, making API requests, and displaying data dynamically.
+This project is a simple image finder application built with React. It allows users to search for images using keywords and displays the results in a grid. The application uses the Pixabay API to fetch images based on the user's input.
 
 ## Screenshot
 Here is a screenshot of the image finder application:
@@ -28,4 +28,4 @@ npm install
  
 npm start
 
-Open your web browser and go to http://localhost:3000 to use the phonebook application.
+Open your web browser and go to http://localhost:3000 to use the image finder application.
