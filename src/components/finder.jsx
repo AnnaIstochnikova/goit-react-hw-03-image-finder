@@ -5,7 +5,11 @@ import { Watch } from 'react-loader-spinner';
 import { Searchbar } from './search-bar/search-bar';
 import { LoadMoreBtn } from './load-more-btn/load-more-btn';
 import { ImageGallery } from './image-gallery/image-gallery';
-import { fetchData, requestedWord, currentPage } from './API-search/APISearch';
+import {
+  fetchData,
+  requestedWord,
+  currentPage,
+} from '../services/API-search/APISearch';
 
 class Finder extends Component {
   state = {
